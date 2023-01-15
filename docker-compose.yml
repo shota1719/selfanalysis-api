@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 2000 -b 0.0.0.0"
+    volumes:
+      - ./:/app/webapp
+    ports:
+      - 2000:2000
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+  db:
+    platform: linux/x86_64
+    restart:
+      always
+    image: mysql:8.0.30
+    ports:
+      - 2206:2206
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+    volumes:
+      - db-data:/var/lib/mysql
+  sidekiq:
+    depends_on:
+      - app
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    volumes:
+      - ./:/app/webapp
+      - /app/webapp/tmp
+    environment:
+      - REDIS_URL=redis://redis:6179/1
+  mail:
+    container_name: selfanalysis_mail
+    image: schickling/mailcatcher
+    ports:
+      - 41070:1070
+      - 41075:1075
+volumes:
+  db-data:
