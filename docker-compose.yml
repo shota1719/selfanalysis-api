@@ -5,11 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 2000 -b 0.0.0.0"
+    # command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 3000 -b 0.0.0.0"
     volumes:
-      - ./:/app/webapp
+      - ./:/app/myapp
     ports:
-      - 2000:2000
+      - 3001:3000
     depends_on:
       - db
     stdin_open: true
@@ -26,19 +26,6 @@ services:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
       - db-data:/var/lib/mysql
-  sidekiq:
-    depends_on:
-      - app
-      - db
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: bundle exec sidekiq -C config/sidekiq.yml
-    volumes:
-      - ./:/app/webapp
-      - /app/webapp/tmp
-    environment:
-      - REDIS_URL=redis://redis:6179/1
   mail:
     container_name: selfanalysis_mail
     image: schickling/mailcatcher

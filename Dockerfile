@@ -8,6 +8,4 @@ WORKDIR $APP_ROOT
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
-ADD . ./
-
-CMD bundle exec rails s -p 2000 -b '0.0.0.0'
+# CMD bundle exec rails s -p 2000 -b '0.0.0.0'
