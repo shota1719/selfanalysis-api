@@ -15,7 +15,7 @@ services:
     stdin_open: true
     tty: true
     networks:
-      - selfanalysis-network
+      - self-hospital-network
   db:
     platform: linux/x86_64
     restart:
@@ -29,13 +29,13 @@ services:
     volumes:
       - db-data:/var/lib/mysql
   mail:
-    container_name: selfanalysis_mail
+    container_name: selfhospital_mail
     image: schickling/mailcatcher
     ports:
       - 41070:1070
       - 41075:1075
 networks:
-  selfanalysis-network:
+  self-hospital-network:
     external: true
 volumes:
   db-data:
