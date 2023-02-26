@@ -18,6 +18,15 @@ ActiveRecord::Schema.define(version: 2023_02_19_075735) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "last_name", null: false
+    t.string "first_name", null: false
+    t.date "birthday", null: false
+    t.string "sex", null: false
+    t.string "telphone_number", null: false
+    t.string "emergency_contact"
+    t.string "post_code", null: false
+    t.string "adress", null: false
+    t.string "password", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_patients_on_email", unique: true
