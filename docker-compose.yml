@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 3000 -b 0.0.0.0"
+    # command: bash -c "rm -f tmp/pids/server.pid && bundle install && bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 3000 -b 0.0.0.0"
     volumes:
       - ./:/app/myapp
     ports:
@@ -15,14 +15,15 @@ services:
     stdin_open: true
     tty: true
     networks:
-      - self-hospital-network
+      default: 
+      selfhospital-api_default:
   db:
     platform: linux/x86_64
     restart:
       always
     image: mysql:8.0.30
     ports:
-      - 2206:2206
+      - 2206:3306
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD: "password"
@@ -35,7 +36,7 @@ services:
       - 41070:1070
       - 41075:1075
 networks:
-  self-hospital-network:
+  selfhospital-api_default:
     external: true
 volumes:
   db-data:
