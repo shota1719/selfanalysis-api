@@ -14,9 +14,9 @@ services:
       - db
     stdin_open: true
     tty: true
-    # networks:
-    #   default: 
-    #   selfhospital-api_default:
+    networks:
+      default: 
+      selfhospital-api_default:
   db:
     platform: linux/x86_64
     restart:
@@ -29,17 +29,17 @@ services:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
       - db-data:/var/lib/mysql
-    # networks:
-    #   default: 
-    #   selfhospital-api_default:
+    networks:
+      default: 
+      selfhospital-api_default:
   mail:
     container_name: selfhospital_mail
     image: schickling/mailcatcher
     ports:
       - 41070:1070
       - 41075:1075
-# networks:
-#   selfhospital-api_default:
-#     external: true
+networks:
+  selfhospital-api_default:
+    external: true
 volumes:
   db-data:
